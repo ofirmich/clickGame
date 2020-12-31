@@ -75,64 +75,69 @@ def main():
     tcpServerSocket.settimeout(10)
     tcpServerSocket.listen()
     while True:
-        ### GLOBALS ###
-        group1 = []
-        group2 = []
-        # list of lists - the first cell- the team name, the second cell- the teams tcp socket
-        # the last cell - the teams counter - the number of chars sended
-        waiting_for_clients(group1, group2, tcpServerSocket)
-
-        while True:       
-            print (group1, group2)
-            # the first message sent on tcp:
-            startString = "Welcome to Keyboard Spamming Battle Royale.\n"
-            group1String = "Group1:\n==\n"
-            group2String = "Group2:\n==\n"
-            for i in group1:
-                group1String = group1String+i[0]+"\n"
-            for i in group2:
-                group2String = group2String+i[0]+"\n"
-            endString = "\nStart pressing keys on your keyboard as fast as you can!!"
-            allMassage = startString + group1String + group2String + endString
-
-            # sending the message to each client
-            threads = []
-            for socketPerClient in group1 + group2:
-                t3 = threading.Thread(target=threadForEachClient, args=(socketPerClient, allMassage))
-                t3.start()
-                threads.append(t3)
-            
-            for thread in threads:
-                thread.join()
-
-            group1_score = 0
-            group2_score = 0
-
-            # adding score to each group
-            for socketPerClient in group1:
-                group1_score += socketPerClient[2]
-
-            for socketPerClient in group2:
-                group2_score += socketPerClient[2]
-
-            # print the win message
-            print("Game over!\nGroup 1 typed in "+ str(group1_score) +" characters. Group 2 typed in "+str(group2_score)+" characters.\n")
-            if group1_score > group2_score:
-                print("Group 1 wins!")
-                print("Congratulations to the winners:\n==")
-                for socketPerClient in group1:
-                    print(socketPerClient[0])
-            elif group1_score < group2_score:
-                print("Group 2 wins!")
-                print("Congratulations to the winners:\n==")
-                for socketPerClient in group2:
-                    print(socketPerClient[0])
-
-            else:
-                print("Its a tie! You are all winners")
-
+        try:
+            ### GLOBALS ###
             group1 = []
             group2 = []
-            break
+            # list of lists - the first cell- the team name, the second cell- the teams tcp socket
+            # the last cell - the teams counter - the number of chars sended
+            waiting_for_clients(group1, group2, tcpServerSocket)
+
+            while True:       
+                print (group1, group2)
+                # the first message sent on tcp:
+                startString = "Welcome to Keyboard Spamming Battle Royale.\n"
+                group1String = "Group1:\n==\n"
+                group2String = "Group2:\n==\n"
+                for i in group1:
+                    group1String = group1String+i[0]+"\n"
+                for i in group2:
+                    group2String = group2String+i[0]+"\n"
+                endString = "\nStart pressing keys on your keyboard as fast as you can!!"
+                allMassage = startString + group1String + group2String + endString
+
+                # sending the message to each client
+                threads = []
+                for socketPerClient in group1 + group2:
+                    t3 = threading.Thread(target=threadForEachClient, args=(socketPerClient, allMassage))
+                    t3.start()
+                    threads.append(t3)
+                
+                for thread in threads:
+                    thread.join()
+
+                group1_score = 0
+                group2_score = 0
+
+                # adding score to each group
+                for socketPerClient in group1:
+                    group1_score += socketPerClient[2]
+
+                for socketPerClient in group2:
+                    group2_score += socketPerClient[2]
+
+                # print the win message
+                print("Game over!\nGroup 1 typed in "+ str(group1_score) +" characters. Group 2 typed in "+str(group2_score)+" characters.\n")
+                if group1_score > group2_score:
+                    print("Group 1 wins!")
+                    print("Congratulations to the winners:\n==")
+                    for socketPerClient in group1:
+                        print(socketPerClient[0])
+                elif group1_score < group2_score:
+                    print("Group 2 wins!")
+                    print("Congratulations to the winners:\n==")
+                    for socketPerClient in group2:
+                        print(socketPerClient[0])
+
+                else:
+                    print("Its a tie! You are all winners")
+
+                group1 = []
+                group2 = []
+                break
+        
+        except (ConnectionError,ConnectionResetError):
+            print("Error in connection")
+            continue
 
 main()
