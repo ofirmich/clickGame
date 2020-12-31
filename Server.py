@@ -109,7 +109,6 @@ def main():
 
         else:
             print("Its a tie! You are all winners")
-        
 
 
 main()

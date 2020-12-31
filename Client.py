@@ -13,9 +13,8 @@ UDPclientSocket = socket(AF_INET, SOCK_DGRAM)
 UDPclientSocket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
 UDPclientSocket.bind(('', udpServerPort))
 
-# timer = time.time() +10
-# while time.time() < timer:
-while True:
+timer = time.time() +10
+while time.time() < timer:
     # recive message from server
     data, serverAddress = UDPclientSocket.recvfrom(28)
     TCPclientSocket = socket(AF_INET, SOCK_STREAM)
