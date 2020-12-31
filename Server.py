@@ -84,7 +84,6 @@ def main():
             waiting_for_clients(group1, group2, tcpServerSocket)
 
             while True:       
-                print (group1, group2)
                 # the first message sent on tcp:
                 startString = "Welcome to Keyboard Spamming Battle Royale.\n"
                 group1String = "Group1:\n==\n"
