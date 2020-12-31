@@ -4,6 +4,7 @@ import struct
 import threading
 import random
 
+#commit
 ### GLOBALS ###
 group1 = []
 group2 = []

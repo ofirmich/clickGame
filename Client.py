@@ -2,7 +2,7 @@ from socket import *
 import struct
 import msvcrt
 import time
-
+#commit
 # the client chooses group name
 val = input("enter your team name: ")
 # print(val)
