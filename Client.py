@@ -2,7 +2,7 @@ from socket import *
 import struct
 import msvcrt
 import time
-#commit
+
 # the client chooses group name
 val = input("enter your team name: ")
 # print(val)
@@ -27,7 +27,8 @@ while time.time() < timer:
     if openMessage[0] == 0xfeedbeef and openMessage[1] == 0x2:
         tcpServerPort = openMessage[2]
         UDPclientSocket.close()
-        TCPclientSocket.connect(("localhost", tcpServerPort))
+        print(tcpServerPort)
+        TCPclientSocket.connect((serverAddress[0], tcpServerPort))
         TCPclientSocket.send((team_name + '\n').encode())
         # receive message from server - about the game starting
         firstMessage = TCPclientSocket.recv(1024).decode()
@@ -35,8 +36,9 @@ while time.time() < timer:
         # for 10 sec send every key press
         timer = time.time() + 10
         while time.time() < timer:
-            c = msvcrt.getch()
-            print(c)
-            TCPclientSocket.send(c)
+            if msvcrt.kbhit():
+                char = msvcrt.getch()
+                print(char)
+                TCPclientSocket.send(char)
     else:
         continue
